@@ -95,6 +95,10 @@ is separate work, and it is not presented as done.
 - **does not repair** anything: it only reports;
 - **sends nothing anywhere**: everything is computed locally.
 
+## Why the peer range is so long
+
+`peerDependencies` carries nine branches with explicit prerelease tags rather than one short range. That is not decoration: node-semver lets a prerelease version satisfy a range only if some comparator in it sits on the **same** `major.minor.patch` tuple and itself carries a prerelease tag. So the broad-looking `>=0.1.0-rc.2 <0.3.0` matches **neither** `0.1.7-alpha.2` nor `0.2.1-alpha.1`, and the user gets an `ERESOLVE`. Checked against npm itself: the short range resolves to `0.1.0-rc.2 … 0.1.0-rc.8` only, the long one to every version we need.
+
 ## Build
 
 ```
