@@ -53,7 +53,8 @@
     "cordis.patch.yml",
     "README.md",
     "CHANGELOG.md",
-    "LICENSE"
+    "LICENSE",
+    "images/"
   ],
   "scripts": {
     "build": "tsdown",
