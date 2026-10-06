@@ -11,7 +11,7 @@
 
 # @ragnoryok1/dsh-plugin-doctor
 
-![Диагностика проблем плагинов DeepSeek Harness](images/banner.png)
+![Диагностика проблем плагинов DeepSeek Harness](images/banner.jpg)
 
 Панель диагностики плагинов для веб-интерфейса [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`).
 
