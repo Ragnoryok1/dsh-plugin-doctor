@@ -62,6 +62,7 @@
   },
   "scripts": {
     "build": "tsdown",
+    "check:readmes": "node scripts/check-readmes.mjs",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },

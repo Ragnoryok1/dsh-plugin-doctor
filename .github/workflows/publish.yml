@@ -68,6 +68,11 @@ jobs:
             console.log('README meta version ' + meta.version + ' matches package.json');
           "
 
+      # The three READMEs describe one document; this gate fails when an edit
+      # touches one language and leaves the others behind.
+      - name: Check the READMEs stay in step
+        run: npm run check:readmes
+
       - name: Build
         run: npm run build
 
