@@ -11,6 +11,8 @@
 
 # @ragnoryok1/dsh-plugin-doctor
 
+![Диагностика проблем плагинов DeepSeek Harness](images/banner.png)
+
 Панель диагностики плагинов для веб-интерфейса [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`).
 
 **In English.** A Diagnostics tab inside Settings → Built-in plugins. It lists every plugin the running harness knows about and explains anything that is not working: plugins that failed to load (with their own error message), bundle rows that are declared but never went live — the trace a failed update leaves behind — entries that cannot be managed from the interface with the reason why, disabled plugins, and version warnings. Each section carries one piece of advice instead of repeating it per row, and the panel always states how many plugins it actually checked, so "no problems" can be told apart from "the check saw nothing". It reads only supported services (`remote.pluginManager` over the Remote protocol) and never another package's files or internals, so it survives harness updates. Results below are in Russian.
