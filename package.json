@@ -1,7 +1,7 @@
 {
   "name": "@ragnoryok1/dsh-plugin-doctor",
   "description": "Diagnostics for DeepSeek Harness: finds plugins that failed to load, bundles whose rows never started, version mismatches and unmanageable entries, and explains what to do",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "deepseek",
     "deepseek-harness",
@@ -53,6 +53,8 @@
     "bin/",
     "cordis.patch.yml",
     "README.md",
+    "README.en.md",
+    "README.zh.md",
     "CHANGELOG.md",
     "LICENSE",
     "images/"

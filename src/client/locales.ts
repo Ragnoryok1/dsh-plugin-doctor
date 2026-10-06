@@ -62,3 +62,36 @@ export const ru: Record<keyof typeof en, string> = {
   'sawNothing': 'Проверка не увидела ни одного плагина. Это подозрительно: возможно, список плагинов сейчас недоступен.',
   'error': 'Сама проверка не удалась: {message}',
 }
+
+/**
+ * Simplified Chinese copy.
+ *
+ * Chinese marks no plural category, so `problemCount.one` and
+ * `problemCount.other` are the same string: the contract still asks for both
+ * keys by count, and both answer identically.
+ */
+export const zh: Record<keyof typeof en, string> = {
+  'tab': '诊断',
+  'title': '插件诊断',
+  'intro': '检查运行中的 harness 上每个插件的状态，并说明哪里出了问题。',
+  'run': '重新检查',
+  'running': '检查中…',
+  'healthy': '没有问题：所有插件均已加载且兼容。',
+  'problemCount.one': '发现 {count} 个问题',
+  'problemCount.other': '发现 {count} 个问题',
+  'sectionFailed': '加载失败',
+  'sectionRowMissing': '已声明但未运行',
+  'sectionReadOnly': '无法从界面管理',
+  'sectionDisabled': '已禁用',
+  'sectionWarnings': '版本警告',
+  'hintFailed': '插件启动时报告了错误。请看下面的消息；如果其中提到找不到模块，通常说明该包没有安装。',
+  'hintRowMissing': '包声明了这一行，但没有任何运行中的条目承载它。这正是更新失败后留下的痕迹：重新安装该插件。',
+  'hintReadOnly': '条目存在，但无法在这里切换，通常是因为它来自配置档自身的配置。',
+  'hintDisabled': '这是有意关闭的。如果它应当运行，请在插件列表中启用。',
+  'hintWarnings': '不致命，但值得在下次更新前读一读。',
+  'phase': '状态',
+  'moduleLabel': '模块',
+  'checked': '已检查 {plugins} 个插件、{rows} 条包记录。',
+  'sawNothing': '检查没有看到任何插件。这很可疑：插件列表现在可能不可用。',
+  'error': '检查本身失败：{message}',
+}

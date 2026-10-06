@@ -12,7 +12,7 @@
  * locale pack.
  */
 import * as React from 'react'
-import { NS, en, ru } from './locales.ts'
+import { NS, en, ru, zh } from './locales.ts'
 
 /** Minimal shape of what this plugin consumes, declared locally on purpose. */
 interface DoctorContext {
@@ -91,6 +91,7 @@ export const inject = ['slots', 'locale', 'remote', 'remote.pluginManager']
 export function apply(ctx: DoctorContext): void {
   ctx.effect(() => ctx.locale.register(NS, 'en', en), 'plugin-doctor: en dictionary')
   ctx.effect(() => ctx.locale.register(NS, 'ru', ru), 'plugin-doctor: ru dictionary')
+  ctx.effect(() => ctx.locale.register(NS, 'zh', zh), 'plugin-doctor: zh dictionary')
 
   const t = ctx.locale.bind(NS)
   const check = (): Promise<Report> => diagnose(ctx, t)
