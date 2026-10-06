@@ -30,6 +30,71 @@ function readJson(path) {
   try { return JSON.parse(readFileSync(path, 'utf8')) } catch { return null }
 }
 
+/**
+ * Read the launcher's own account of a failed boot.
+ *
+ * When a start fails, the harness writes `$DSH_HOME/logs/startup-<iso>-<uuid>.log`
+ * — a `util.inspect` dump of a structured object, so it is laid out in fixed
+ * indentation rather than free prose, and it names the plugins that did not
+ * activate together with their package and their error. That is the ground
+ * truth our panel cannot reach: a row that dies on the host never appears in
+ * the live plugin list.
+ *
+ * The parser is bounded by the counts the file states in its own headers
+ * ("Failed plugins (1):"), because long error strings are wrapped across several
+ * lines and would otherwise be counted as extra rows. Checked against three real
+ * logs in this profile.
+ */
+function parseStartupLog(text) {
+  const head = /^\s{2}error:\s*(.+)$/mu.exec(text)
+  if (head === null) return null
+  const field = name => new RegExp(`^\\s{2}${name}:\\s*'([^']*)'`, 'mu').exec(text)?.[1]
+  const lines = text.split('\n').map(line => line.replace(/\r$/u, ''))
+  const failedHead = /^\s*Failed plugins \((\d+)\):/mu.exec(text)
+  const waitingHead = /^\s*Plugins waiting for services \((\d+)\):/mu.exec(text)
+  const failedAt = lines.findIndex(line => /^\s*Failed plugins \(\d+\):/u.test(line))
+  const waitingAt = lines.findIndex(line => /^\s*Plugins waiting for services \(\d+\):/u.test(line))
+
+  const failed = []
+  if (failedAt !== -1) {
+    const end = waitingAt > failedAt ? waitingAt : lines.length
+    let current = null
+    for (const line of lines.slice(failedAt + 1, end)) {
+      const entry = /^\s{4}(\S+) \((required|optional)\)\s*$/u.exec(line)
+      if (entry !== null) {
+        if (failed.length >= Number(failedHead?.[1] ?? 0)) break
+        current = { name: entry[1], required: entry[2] === 'required', package: null, error: null }
+        failed.push(current)
+        continue
+      }
+      if (current === null) continue
+      const pkg = /^\s{6}Package:\s*(.+?)\s*$/u.exec(line)
+      if (pkg !== null) { current.package = pkg[1]; continue }
+      const err = /^\s{6}Error:\s*(.+?)\s*$/u.exec(line)
+      if (err !== null && current.error === null) current.error = err[1]
+    }
+  }
+
+  const waiting = []
+  if (waitingAt !== -1) {
+    for (const line of lines.slice(waitingAt + 1)) {
+      if (waiting.length >= Number(waitingHead?.[1] ?? 0)) break
+      const row = /^\s{4}(\S+(?: \((?:required|optional)\))?)\s{2,}([^\s'].*?)\s*$/u.exec(line)
+      if (row === null || row[1] === 'Plugin') continue
+      waiting.push({ name: row[1], missing: row[2] })
+    }
+  }
+
+  return {
+    timestamp: field('timestamp'),
+    dshVersion: field('dshVersion'),
+    profile: field('profile'),
+    headline: head[1].replace(/^StartupError:\s*/u, ''),
+    failed,
+    waiting,
+  }
+}
+
 /** Every directory one level under node_modules, scoped names included. */
 function packageDirs(modules) {
   const out = []
@@ -94,6 +159,34 @@ for (const profile of readdirSync(PROFILES)) {
         advice: 'удалите каталог и повторите установку — из-за него обновления падают с EPERM',
       })
     }
+  }
+}
+
+// 3. Failed boots, as the launcher itself recorded them.
+const LOGS = join(DSH_HOME, 'logs')
+if (existsSync(LOGS)) {
+  const logs = readdirSync(LOGS)
+    .filter(name => name.startsWith('startup-') && name.endsWith('.log'))
+    .map(name => ({ name, at: statSync(join(LOGS, name)).mtimeMs }))
+    .sort((a, b) => b.at - a.at)
+    .slice(0, 3)
+  for (const log of logs) {
+    const parsed = parseStartupLog(readFileSync(join(LOGS, log.name), 'utf8'))
+    if (parsed === null || parsed.failed.length === 0) continue
+    const who = parsed.failed
+      .map(item => `${item.name}${item.required ? ' (обязательный)' : ''}`
+        + (item.package === null ? '' : ` — ${item.package}`)
+        + (item.error === null ? '' : `: ${item.error}`))
+      .join('; ')
+    findings.push({
+      profile: parsed.profile ?? '—',
+      kind: 'startup-failure',
+      subject: log.name,
+      detail: `харнесс не запустился ${parsed.timestamp ?? ''} (dsh ${parsed.dshVersion ?? '?'}): ${parsed.headline}\n`
+        + `      не активировались (${parsed.failed.length}): ${who}`
+        + (parsed.waiting.length === 0 ? '' : `\n      ждут сервисов: ${parsed.waiting.length} — обычно они не запускаются, пока не поднимется отказавший`),
+      advice: 'начните с ошибки первого плагина из списка: остальные чаще всего ждут его сервис',
+    })
   }
 }
 

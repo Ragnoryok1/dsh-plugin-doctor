@@ -78,6 +78,7 @@ node bin/doctor-scan.mjs
 | `*.parked` directories | a plugin copy set aside — the trace of getting past a locked rename during an update |
 | `_tmp_*` directories | the leftover of a failed install; it is what makes updates fail with `EPERM` |
 | broken `file:` links | the profile points at a file that is gone: the install fails with `ENOENT` before it starts |
+| failed boot reports | `logs/startup-*.log`: the launcher itself names the plugins that did not activate, with their package, their error and the number of plugins waiting on them |
 
 **Verified on real debris.** The script was run on a clean profile, then on one
 with deliberately created leftovers (it found both), then clean again — no
