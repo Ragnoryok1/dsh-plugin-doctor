@@ -50,12 +50,16 @@
   },
   "files": [
     "lib/",
+    "bin/",
     "cordis.patch.yml",
     "README.md",
     "CHANGELOG.md",
     "LICENSE",
     "images/"
   ],
+  "bin": {
+    "dsh-doctor": "./bin/doctor-scan.mjs"
+  },
   "scripts": {
     "build": "tsdown",
     "typecheck": "tsc --noEmit",
