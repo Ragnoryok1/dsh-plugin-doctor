@@ -1,0 +1,5 @@
+# Test fixture: inserts a row that intentionally fails to start, so the
+# diagnostics panel has a real broken plugin to report.
+- insert:
+    - id: doctor-canary
+      name: '@ragnoryok1/dsh-doctor-canary'

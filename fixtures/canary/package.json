@@ -1,0 +1,23 @@
+{
+  "name": "@ragnoryok1/dsh-doctor-canary",
+  "description": "Test fixture: a plugin that always fails to load, used to prove the diagnostics panel detects a broken plugin. Not meant to be kept installed.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "cordis.patch.yml"
+  ]
+}
