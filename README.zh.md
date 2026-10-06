@@ -89,7 +89,7 @@ npm pack
 ## 目录结构
 
 - `src/client/index.ts` —— 面板、各项检查以及标签页注册；
-- `src/client/locales.ts` —— 本插件自身界面所用的 `ru` 和 `en` 词典；
+- `src/client/locales.ts` —— 本插件自身界面所用的 `ru`、`zh` 和 `en` 词典；
 - `src/index.ts` —— 空的宿主端部分（它的作用是提供一个可加载的 node 入口）；
 - `cordis.patch.yml` —— 配置档补丁（为 `plugin-doctor` 客户端行添加 `- insert:`）；
 - `bin/doctor-scan.mjs` —— 磁盘扫描（残留文件与损坏链接）；

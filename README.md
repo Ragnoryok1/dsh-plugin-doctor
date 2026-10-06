@@ -115,7 +115,7 @@ npm pack
 ## Содержимое
 
 - `src/client/index.ts` — панель, проверки и регистрация вкладки;
-- `src/client/locales.ts` — словари `ru` и `en` для собственного интерфейса;
+- `src/client/locales.ts` — словари `ru`, `zh` и `en` для собственного интерфейса;
 - `src/index.ts` — пустая host-половина (нужна как загружаемая node-точка входа);
 - `cordis.patch.yml` — профиль-патч (`- insert:` клиентской строки `plugin-doctor`);
 - `bin/doctor-scan.mjs` — проверка диска (остатки и битые ссылки);

@@ -110,7 +110,7 @@ packages stay external and are resolved by the loader.
 ## Contents
 
 - `src/client/index.ts` — the panel, the checks and the tab registration;
-- `src/client/locales.ts` — the `ru` and `en` dictionaries for this plugin's own interface;
+- `src/client/locales.ts` — the `ru`, `zh` and `en` dictionaries for this plugin's own interface;
 - `src/index.ts` — the empty host half (it exists as a loadable node entry point);
 - `cordis.patch.yml` — the profile patch (`- insert:` for the `plugin-doctor` client row);
 - `bin/doctor-scan.mjs` — the disk scan (leftovers and broken links);
